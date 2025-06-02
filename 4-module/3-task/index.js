@@ -6,14 +6,15 @@ function highlight(table) {
     const genderCell = tableRow.querySelector("td:nth-child(3)");
     const isAvailableCell = tableRow.querySelector("td:nth-child(4)");
 
-    if (!isAvailableCell.hasAttribute("data-available")) {
-      tableRow.setAttribute("hidden", "true");
+    const status = isAvailableCell.dataset.available;
+
+    if (!status) {
+      tableRow.hidden = true;
     }
-    if (isAvailableCell.dataset.available === "true") {
-      tableRow.classList.add("available");
-    }
-    if (isAvailableCell.dataset.available === "false") {
-      tableRow.classList.add("unavailable");
+
+    else {
+      tableRow.classList.toggle('available', status === 'true');
+      tableRow.classList.toggle('unavailable', status === 'false');
     }
 
     if (genderCell.textContent === "m") {
