@@ -2,10 +2,10 @@ function initCarousel() {
   const carousel__container = document.querySelector(".carousel");
   const carousel = carousel__container.querySelector(".carousel__inner");
   const carousel__slide = carousel.querySelector(".carousel__slide");
-  const carousel__arrow_right = document.querySelector(
+  const carousel__arrow_right = carousel__container.querySelector(
     ".carousel__arrow_right"
   );
-  const carousel__arrow_left = document.querySelector(".carousel__arrow_left");
+  const carousel__arrow_left = carousel__container.querySelector(".carousel__arrow_left");
   const carousel__slide_width = carousel__slide.offsetWidth;
 
   let counter = 0;
