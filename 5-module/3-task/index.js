@@ -19,7 +19,6 @@ function initCarousel() {
       carousel.style.transform = `translateX(${
         carousel__slide_width * counter
       }px)`;
-      console.log(counter);
     }
 
     if (arrow.classList.contains("carousel__arrow_right") && counter < 3) {
