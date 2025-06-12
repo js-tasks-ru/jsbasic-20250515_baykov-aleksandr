@@ -42,15 +42,28 @@ export default class RibbonMenu {
     ribbon.addEventListener("click", (event) => {
       if (event.target.closest(".ribbon__arrow_right")) {
         inner.scrollBy(350, 0);
-      }
-
-      else if (event.target.closest(".ribbon__arrow_left")) {
+      } else if (event.target.closest(".ribbon__arrow_left")) {
         inner.scrollBy(-350, 0);
       }
       return;
 
-
       //this.#updateCarousel();
     });
-}
+
+    inner.addEventListener("scroll", () => {
+      const leftArrow = ribbon.querySelector(".ribbon__arrow_left");
+      const rightArrow = ribbon.querySelector(".ribbon__arrow_right");
+      let scrollWidth = inner.scrollWidth;
+      let scrollLeft = inner.scrollLeft;
+      let clientWidth = inner.clientWidth;
+
+      let scrollRight = scrollWidth - scrollLeft - clientWidth;
+
+      leftArrow.classList.toggle(
+        "ribbon__arrow_visible",
+        inner.scrollLeft !== 0
+      );
+      rightArrow.classList.toggle("ribbon__arrow_visible", scrollRight > 1);
+    });
+  }
 }
