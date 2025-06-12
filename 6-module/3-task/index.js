@@ -96,6 +96,6 @@ export default class Carousel {
 
     arrowLeft.style.display = this.currentSlideIndex === 0 ? "none" : "";
     arrowRight.style.display =
-      this.currentSlideIndex === this.slides.length - 1 ? "none" : "";
+    this.currentSlideIndex === this.slides.length - 1 ? "none" : "";
   }
 }
