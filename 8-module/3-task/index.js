@@ -29,19 +29,34 @@ export default class Cart {
   }
 
   updateProductCount(productId, amount) {
-    // ваш код
+    let cartItem = this.cartItems.find((item) => item.product.id === productId);
+
+    amount === 1
+      ? (cartItem.count += 1)
+      : amount === -1
+      ? (cartItem.count -= 1)
+      : cartItem.count;
+
+    if (cartItem.count === 0) {
+      this.cartItems.splice(this.cartItems.indexOf(cartItem), 1);
+    }
+
+    this.onProductUpdate(cartItem);
   }
 
   isEmpty() {
-    return Boolean(this.cartItems)
+    return Boolean(this.cartItems);
   }
 
   getTotalCount() {
-    return this.cartItems.reduce((acc, el) => acc + el.count, 0)
+    return this.cartItems.reduce((acc, el) => acc + el.count, 0);
   }
 
   getTotalPrice() {
-    return this.cartItems.reduce((acc, el) => acc + el.count * el.product.price, 0)
+    return this.cartItems.reduce(
+      (acc, el) => acc + el.count * el.product.price,
+      0
+    );
   }
 
   onProductUpdate(cartItem) {
