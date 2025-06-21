@@ -45,7 +45,7 @@ export default class Cart {
   }
 
   isEmpty() {
-    return Boolean(this.cartItems);
+    return !this.cartItems.length;
   }
 
   getTotalCount() {
