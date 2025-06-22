@@ -193,7 +193,7 @@ export default class Cart {
 
   onSubmit(event) {
     event.preventDefault();
-    //Добавить класс is-loading кнопке с атрибутом type="submit".
+    
     const form = event.target;
     const submitButton = form.querySelector('button[type="submit"]');
     submitButton.classList.add("is-loading");
@@ -208,15 +208,15 @@ export default class Cart {
           this.modal.setTitle("Success!");
           this.cartItems = [];
           this.cartIcon.update(this);
-          const modal = document.querySelector(".modal");
-          modal.innerHTML = `
-      <div class="modal__body-inner">
-    <p>
-      Order successful! Your order is being cooked :) <br>
-      We’ll notify you about delivery time shortly.<br>
-      <img src="/assets/images/delivery.gif">
-    </p>
-  </div>
+          const modalBody = this.modal.elem.querySelector(".modal__body");
+          modalBody.innerHTML = `
+            <div class="modal__body-inner">
+              <p>
+                Order successful! Your order is being cooked :) <br>
+                We'll notify you about delivery time shortly.<br>
+                <img src="/assets/images/delivery.gif">
+              </p>
+            </div>
   `;
         }
       })
