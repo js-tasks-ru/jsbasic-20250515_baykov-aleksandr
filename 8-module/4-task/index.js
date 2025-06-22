@@ -127,6 +127,28 @@ export default class Cart {
     modalContent.append(orderForm);
 
     this.modal = new Modal("Your order", modalContent);
+
+    const submitButton = modalContent.querySelector(".cart-form");
+
+    orderForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      this.onSubmit(event);
+
+      modalContent.addEventListener("click", (event) => {
+        const target = event.target;
+        const productElement = target.closest(".cart-product");
+
+        if (!productElement) return;
+
+        const productId = productElement.dataset.productId;
+
+        if (target.closest(".cart-counter__button_plus")) {
+          this.updateProductCount(productId, 1);
+        } else if (target.closest(".cart-counter__button_minus")) {
+          this.updateProductCount(productId, -1);
+        }
+      });
+    });
   }
 
   onProductUpdate(cartItem) {
