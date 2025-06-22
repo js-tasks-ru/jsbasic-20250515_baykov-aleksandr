@@ -38,6 +38,10 @@ export default class Cart {
   updateProductCount(productId, amount) {
     let cartItem = this.cartItems.find((item) => item.product.id === productId);
 
+    if (!cartItem) {
+      return;
+    }
+
     amount === 1
       ? (cartItem.count += 1)
       : amount === -1
@@ -127,8 +131,6 @@ export default class Cart {
     modalContent.append(orderForm);
 
     this.modal = new Modal("Your order", modalContent);
-
-    //const submitButton = modalContent.querySelector(".cart-form");
 
     orderForm.addEventListener("submit", (event) => {
       event.preventDefault();
