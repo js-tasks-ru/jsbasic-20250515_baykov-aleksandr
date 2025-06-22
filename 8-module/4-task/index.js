@@ -192,7 +192,35 @@ export default class Cart {
   }
 
   onSubmit(event) {
-    // ...ваш код
+    event.preventDefault();
+    //Добавить класс is-loading кнопке с атрибутом type="submit".
+    const form = event.target;
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.classList.add("is-loading");
+    const formData = new FormData(form);
+
+    fetch("https://httpbin.org/post", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          this.modal.setTitle("Success!");
+          this.cartItems = [];
+          this.cartIcon.update(this);
+          const modal = document.querySelector(".modal");
+          modal.innerHTML = `
+      <div class="modal__body-inner">
+    <p>
+      Order successful! Your order is being cooked :) <br>
+      We’ll notify you about delivery time shortly.<br>
+      <img src="/assets/images/delivery.gif">
+    </p>
+  </div>
+  `;
+        }
+      })
+      .catch((error) => console.log(error));
   }
 
   addEventListeners() {
