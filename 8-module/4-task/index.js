@@ -128,33 +128,65 @@ export default class Cart {
 
     this.modal = new Modal("Your order", modalContent);
 
-    const submitButton = modalContent.querySelector(".cart-form");
+    //const submitButton = modalContent.querySelector(".cart-form");
 
     orderForm.addEventListener("submit", (event) => {
       event.preventDefault();
       this.onSubmit(event);
+    });
 
-      modalContent.addEventListener("click", (event) => {
-        const target = event.target;
-        const productElement = target.closest(".cart-product");
+    modalContent.addEventListener("click", (event) => {
+      const target = event.target;
+      const productElement = target.closest(".cart-product");
 
-        if (!productElement) return;
+      if (!productElement) return;
 
-        const productId = productElement.dataset.productId;
+      const productId = productElement.dataset.productId;
 
-        if (target.closest(".cart-counter__button_plus")) {
-          this.updateProductCount(productId, 1);
-        } else if (target.closest(".cart-counter__button_minus")) {
-          this.updateProductCount(productId, -1);
-        }
-      });
+      if (target.closest(".cart-counter__button_plus")) {
+        this.updateProductCount(productId, 1);
+      } else if (target.closest(".cart-counter__button_minus")) {
+        this.updateProductCount(productId, -1);
+      }
     });
   }
 
   onProductUpdate(cartItem) {
-    // ...ваш код
-
     this.cartIcon.update(this);
+
+    if (document.body.classList.contains("is-modal-open")) {
+      const productId = cartItem.product.id;
+
+      const modal = document.querySelector(".modal");
+      if (!modal) return;
+
+      if (this.isEmpty()) {
+        this.modal.close();
+        return;
+      }
+
+      const productCountElem = modal.querySelector(
+        `[data-product-id="${productId}"] .cart-counter__count`
+      );
+      const productPriceElem = modal.querySelector(
+        `[data-product-id="${productId}"] .cart-product__price`
+      );
+      const infoPriceElem = modal.querySelector(".cart-buttons__info-price");
+
+      if (productCountElem) {
+        productCountElem.textContent = cartItem.count;
+      }
+
+      if (productPriceElem) {
+        productPriceElem.textContent = `€${(
+          cartItem.product.price * cartItem.count
+        ).toFixed(2)}`;
+      }
+
+      if (infoPriceElem) {
+        infoPriceElem.textContent = `€${this.getTotalPrice().toFixed(2)}`;
+      }
+    }
   }
 
   onSubmit(event) {
