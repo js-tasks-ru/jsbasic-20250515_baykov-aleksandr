@@ -16,6 +16,14 @@ export default class Main {
   }
 
   async render() {
-    // ... ваш код
+    document.querySelector('div[data-carousel-holder]').append(new Carousel(slides)._elem);
+    document.querySelector('div[data-ribbon-holder]').append(new RibbonMenu(categories)._elem);
+    document.querySelector('div[data-slider-holder]').append(new StepSlider({steps: 5, value: 3})._elem);
+    const cartIcon = new CartIcon();
+    document.querySelector('div[data-cart-icon-holder]').append(cartIcon.elem);
+    const cart = new Cart(cartIcon);
+
+
+    //Создайте экземпляр компонента Cart передав ему как аргумент созданный ранее экземпляр компонента CartIcon.
   }
 }
