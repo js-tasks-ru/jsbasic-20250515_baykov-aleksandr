@@ -5,53 +5,49 @@ export default class ProductGrid {
   constructor(products) {
     this.products = products;
     this.filters = {};
-    this.render(this.products);
+    this.render();
   }
 
-  render(products) {
-    this.elem = createElement(`<div class="products-grid">
-      <div class="products-grid__inner">
+  render() {
+    this.elem = createElement(`
+      <div class="products-grid">
+        <div class="products-grid__inner"></div>
       </div>
-    </div>`);
+    `);
 
-    let productInner = this.elem.querySelector(".products-grid__inner");
-    productInner.innerHTML = "";
-    products.forEach((item) => {
-      const card = new ProductCard(item);
-      productInner.append(card.elem);
-    });
+    this.updateFilter(this.filters);
   }
 
   updateFilter(filters) {
     Object.assign(this.filters, filters);
 
-    this.filteredProducts = this.filters.category
-      ? [...this.products].filter(
-          (product) => product.category === this.filters.category
-        )
-      : [...this.products];
+    const gridInner = this.elem.querySelector(".products-grid__inner");
+    gridInner.innerHTML = "";
 
-    this.filteredProducts = this.filters.maxSpiciness
-      ? this.filteredProducts.filter(
-          (item) => item.spiciness <= this.filters.maxSpiciness
-        )
-      : this.filteredProducts;
+    for (const product of this.products) {
+      if (this.filters.category && product.category !== this.filters.category) {
+        continue;
+      }
 
-    this.filteredProducts = this.filters.noNuts
-      ? this.filteredProducts.filter(
-          (product) =>
-            (this.filters.noNuts && product.nuts === undefined) ||
-            product.nuts === false
-        )
-      : this.filteredProducts;
-    this.filteredProducts = this.filters.vegeterianOnly
-      ? this.filteredProducts.filter(
-          (product) =>
-            this.filters.vegeterianOnly &&
-            product.vegeterian == this.filters.vegeterianOnly
-        )
-      : this.filteredProducts;
+      if (
+        this.filters.maxSpiciness !== undefined &&
+        product.spiciness > this.filters.maxSpiciness
+      ) {
+        continue;
+      }
 
-    this.render(this.filteredProducts);
+      if (this.filters.noNuts) {
+        if (product.nuts === true) {
+          continue;
+        }
+      }
+
+      if (this.filters.vegeterianOnly && !product.vegeterian) {
+        continue;
+      }
+
+      const productCard = new ProductCard(product);
+      gridInner.append(productCard.elem);
+    }
   }
 }
